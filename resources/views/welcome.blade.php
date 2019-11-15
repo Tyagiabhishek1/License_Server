@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Vocabimate
+                    Vocabimate License Server
                 </div>
 
                 <div class="links">
