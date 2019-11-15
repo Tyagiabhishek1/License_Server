@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'auth:api'], function(){
-Route::get('subplan', 'LicenseController@getCurrentSubsPlan');
-Route::get('planlist','LicenseController@getplanlist');
-Route::post('upgradeplan','LicenseController@upgradeplan');
+Route::get('subplan', 'CurrentPlanController@getCurrentSubsPlan');
+Route::get('planlist','PlanListController@getplanlist');
+Route::post('upgradeplan','UpgradePlanController@upgradeplan');
 });
