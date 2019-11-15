@@ -14,20 +14,20 @@ class UpgradePlanController extends Controller
 {
     public function upgradeplan(Request $request)
     {   $user = Auth::user();
-        $dt =now();
+        $date_time =now();
         $validator = Validator::make($request->all(), [ 
             'user_id' => 'required|numeric',
             'plan_id'=>'required|numeric', 
   ]);   
 if ($validator->fails()) {          
-     return response()->json(['error'=>$validator->errors()], 401);  
+     return response()->json(['error'=>$validator->errors()], 200);  
 }  
     $input = $request->all(); 
     $id=$user->user_id;
     $upgrade_plan['user_id']=$input['user_id'];
     $upgrade_plan['plan_id']=$input['plan_id'];
     $new_plan_id=$input['plan_id'];
-    $upgrade_plan['sub_start_date']=$dt;
+    $upgrade_plan['sub_start_date']=$date_time;
     $sql="select plan_id,plan_name,actual_price,discount_price from plan where plan_id=$new_plan_id";
     $user_new_plan = DB::select($sql);
    
@@ -43,9 +43,9 @@ if ($validator->fails()) {
    }
    DB::table('subscription')
    ->where('user_id',$id)
-   ->update(array('plan_id'=>$plan_id,'sub_start_date'=>$dt,'actual_price'=>$actual_price,'discount_price'=>$discount_price));
+   ->update(array('plan_id'=>$plan_id,'sub_start_date'=>$date_time,'actual_price'=>$actual_price,'discount_price'=>$discount_price));
     $response = array("code"=>200,'message'=>'Your Plan Has Been Upgraded to '.$plan_name);
 
-      return response()->json(['success' =>$response]); 
+      return response()->json(['success' =>array($response)]); 
     }
 }

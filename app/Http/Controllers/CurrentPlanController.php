@@ -23,8 +23,8 @@ class CurrentPlanController extends Controller
 
         foreach($subscription_details as $user_subscription_details)
         {
-          $user_subscription_details_array['sub_start_date']=$user_subscription_details->sub_start_date;
-          $user_subscription_details_array['sub_end_date']=$user_subscription_details->sub_end_date;
+          $user_subscription_details_array['sub_start_date']=strtotime($user_subscription_details->sub_start_date);
+          $user_subscription_details_array['sub_end_date']=strtotime($user_subscription_details->sub_end_date);
           $user_subscription_details_array['subs_status']=$user_subscription_details->subs_status;
           $user_subscription_details_array['user_id']=$user_subscription_details->user_id;
         }
@@ -48,13 +48,18 @@ class CurrentPlanController extends Controller
 
 
       }
-      $user_plan_status=DB::table('subscription')
+      $sub_id=DB::table('subscription')
       ->select('subscription.sub_id')
       ->join('plan','plan.plan_id','=','subscription.plan_id')
       ->where("subscription.user_id", "=",$id)
       ->get();
 
-      return response()->json(['subscription' =>$user_subscription_details_array,'plan'=>$user_plan_details_array,'status'=>$user_plan_status]);
+      foreach($sub_id as $user_sub_id)
+      {
+          $subscription_id=$user_sub_id->sub_id;
+      }
+
+      return response()->json(['subscription' =>$user_subscription_details_array,'subId'=>$subscription_id,'plan'=>$user_plan_details_array]);
 
     }
 }
